@@ -16,7 +16,7 @@ jobs:
       - name: Setup .NET Core SDK
         uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: '7.x'    # Замените на нужную версию .NET
+          dotnet-version: '8.x'    # Замените на нужную версию .NET
  
       - name: Build project
         run: dotnet build WizardsoftApi.csproj --configuration Release
