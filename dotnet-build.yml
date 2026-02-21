@@ -3,7 +3,7 @@ name: Build and Test .NET Project
 on:
     push:
       branches:
-        - master    # Замените на вашу ветку, например, main или master
+        - main    # Замените на вашу ветку, например, main или master
  
 jobs:
     build:
@@ -22,11 +22,36 @@ jobs:
         run: dotnet build WizardsoftApi.csproj --configuration Release
  
       - name: Run tests (фиктивно)
-        run: dotnet test test1.csproj
+        run: echo "Выполняем фиктивные тесты..."
  
       - name: Copy compiled code to client (фиктивно)
         run: echo "Копируем скомпилированный код воображаемому клиенту..."
  
       - name: Publish to Nexus (фиктивно)
-        run: curl app1.dll http//:localhost:8081/
-		echo "Публикуем воображаемые библиотеки в воображаемый Nexus..."
+        run: echo "Публикуем воображаемые библиотеки в воображаемый Nexus..."
+ 
+      - name: Send email on success
+        if: success()
+        uses: dawidd6/action-sendmail@v3
+        with:
+          server_address: smtp.example.com    # Замените на адрес вашего SMTP-сервера
+          server_port: 587    # Порт SMTP-сервера
+          username: ${{ secrets.EMAIL_USERNAME }}
+          password: ${{ secrets.EMAIL_PASSWORD }}
+          subject: "Успешное завершение пайплайна"
+          body: "Пайплайн успешно завершен. Все задачи выполнены успешно."
+          sender: ${{ secrets.EMAIL_SENDER }}
+          recipients: recipient@example.com    # Замените на адрес получателя
+ 
+      - name: Send email on failure
+        if: failure()
+        uses: dawidd6/action-sendmail@v3
+        with:
+          server_address: smtp.example.com    # Замените на адрес вашего SMTP-сервера
+          server_port: 587    # Порт SMTP-сервера
+          username: ${{ secrets.EMAIL_USERNAME }}
+          password: ${{ secrets.EMAIL_PASSWORD }}
+          subject: "Ошибка в пайплайне"
+          body: "Пайплайн завершился с ошибкой. Пожалуйста, проверьте логи."
+          sender: ${{ secrets.EMAIL_SENDER }}
+          recipients: recipient@example.com    # Замените на адрес получателя
